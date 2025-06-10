@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container my-5">
-<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="mb-0">Classic Computing Vitrine</h1><button class="btn btn-dark ms-2" onclick="toggleTheme()">🌙 Dark Mode</button></div>
+<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="mb-0">Classic Computing Vitrine</h1><div><button id="addCardBtn" class="btn btn-success me-2" onclick="location.href='add_exhibit.html'" style="display:none;">➕</button><button class="btn btn-dark ms-2" onclick="toggleTheme()">🌙 Dark Mode</button></div></div>
 <input class="form-control mb-4" id="searchInput" onkeyup="filterEntries()" placeholder="Suche nach Hersteller oder Jahr..." type="text"/>
 <div class="row" id="entries">
 <div class="col-md-4 entry" data-tags="MITS 1975">
@@ -260,6 +260,10 @@ function applyAdminMode() {
     document.querySelectorAll(".admin-edit").forEach(el => {
         el.style.display = sessionStorage.getItem("admin") === "true" ? "inline-block" : "none";
     });
+    const addBtn = document.getElementById('addCardBtn');
+    if (addBtn) {
+        addBtn.style.display = sessionStorage.getItem('admin') === 'true' ? 'inline-block' : 'none';
+    }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
