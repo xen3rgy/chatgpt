@@ -86,7 +86,8 @@ function saveNewExhibit() {
         manufacturer: document.getElementById('manufacturerInput').value
     };
     addCustomExhibit(exhibit);
-    window.location.href = `devices/exhibit.html?id=${exhibit.id}`;
+    // Nach dem Speichern zurück zur Startseite, damit die neue Karte sichtbar ist
+    window.location.href = 'index.html';
 }
 </script>
 </body>
