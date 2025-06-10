@@ -145,9 +145,10 @@ window.addEventListener("DOMContentLoaded", () => {
             card.style.transition = "opacity 0.6s ease-out";
             card.style.opacity = 1;
         }, 100 * i);
-		
-		addYearBadges();
-		addFloatingIcons();
-		addGlobalFooter();
     });
+
+    // These functions should only run once after the cards are processed
+    addYearBadges();
+    addFloatingIcons();
+    addGlobalFooter();
 });
