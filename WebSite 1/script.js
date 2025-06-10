@@ -151,3 +151,50 @@ window.addEventListener("DOMContentLoaded", () => {
 		addGlobalFooter();
     });
 });
+
+// ----- Custom Exhibits -----
+function slugify(text) {
+    return (
+        text.toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '') + '-' + Date.now()
+    );
+}
+
+function loadCustomExhibits() {
+    return JSON.parse(localStorage.getItem('customExhibits') || '[]');
+}
+
+function saveCustomExhibits(data) {
+    localStorage.setItem('customExhibits', JSON.stringify(data));
+}
+
+function addCustomExhibit(exhibit) {
+    const exhibits = loadCustomExhibits();
+    exhibits.push(exhibit);
+    saveCustomExhibits(exhibits);
+}
+
+function renderCustomExhibits() {
+    const container = document.getElementById('entries');
+    if (!container) return;
+    const exhibits = loadCustomExhibits();
+    exhibits.forEach((ex, i) => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 entry';
+        col.setAttribute('data-tags', `${ex.manufacturer} ${ex.year}`);
+        col.innerHTML = `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="devices/exhibit.html?id=${ex.id}">
+                            <span id="title_custom_${i}">${ex.title} (${ex.year})</span>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_custom_${i}')" style="display:none;">✏️</button>
+                    </h5>
+                    <p class="card-text"><span id="text_custom_${i}">${ex.description}</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_custom_${i}')" style="display:none;">✏️</button></p>
+                </div>
+            </div>`;
+        container.appendChild(col);
+    });
+}
