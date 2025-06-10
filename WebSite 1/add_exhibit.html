@@ -78,14 +78,15 @@ window.addEventListener("DOMContentLoaded", () => {
     applyAdminMode();
 });
 function saveNewExhibit() {
-    const data = {
+    const exhibit = {
+        id: slugify(document.getElementById('titleInput').value),
         title: document.getElementById('titleInput').value,
         description: document.getElementById('descInput').value,
         year: document.getElementById('yearInput').value,
         manufacturer: document.getElementById('manufacturerInput').value
     };
-    console.log('Neues Exponat:', data);
-    alert('Speichern-Logik muss serverseitig implementiert werden.');
+    addCustomExhibit(exhibit);
+    window.location.href = `devices/exhibit.html?id=${exhibit.id}`;
 }
 </script>
 </body>
