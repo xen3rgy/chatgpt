@@ -79,13 +79,16 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 function saveNewExhibit() {
     const data = {
+        id: 'new' + Date.now(),
         title: document.getElementById('titleInput').value,
         description: document.getElementById('descInput').value,
         year: document.getElementById('yearInput').value,
         manufacturer: document.getElementById('manufacturerInput').value
     };
-    console.log('Neues Exponat:', data);
-    alert('Speichern-Logik muss serverseitig implementiert werden.');
+    const exhibits = JSON.parse(localStorage.getItem('newExhibits') || '[]');
+    exhibits.push(data);
+    localStorage.setItem('newExhibits', JSON.stringify(exhibits));
+    window.location.href = 'index.html';
 }
 </script>
 </body>

@@ -130,8 +130,9 @@ window.addEventListener("DOMContentLoaded", () => {
         addGlobalFooter();
     }
 	
-	if (window.location.pathname.endsWith("index.html") || window.location.pathname === "/") {
-        sortCardsAlphabetically(); 
+        if (window.location.pathname.endsWith("index.html") || window.location.pathname === "/") {
+        sortCardsAlphabetically();
+        loadNewExhibits();
     }
 	
 	document.getElementById("searchInput")?.addEventListener("input", filterEntries);
@@ -146,8 +147,31 @@ window.addEventListener("DOMContentLoaded", () => {
             card.style.opacity = 1;
         }, 100 * i);
 		
-		addYearBadges();
-		addFloatingIcons();
-		addGlobalFooter();
+                addYearBadges();
+                addFloatingIcons();
+                addGlobalFooter();
     });
 });
+
+function addExhibitCard(ex) {
+    const container = document.getElementById('entries');
+    if (!container) return;
+    const col = document.createElement('div');
+    col.className = 'col-md-4 entry';
+    col.setAttribute('data-tags', `${ex.manufacturer} ${ex.year}`);
+
+    col.innerHTML = `
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><a href="devices/dynamic_device.html?id=${ex.id}"><span id="title_${ex.id}">${ex.title} (${ex.year})</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_${ex.id}')" style="display:none;">✏️</button></h5>
+                <p class="card-text"><span id="text_${ex.id}">${ex.description}</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_${ex.id}')" style="display:none;">✏️</button></p>
+            </div>
+        </div>`;
+
+    container.appendChild(col);
+}
+
+function loadNewExhibits() {
+    const exhibits = JSON.parse(localStorage.getItem('newExhibits') || '[]');
+    exhibits.forEach(ex => addExhibitCard(ex));
+}
