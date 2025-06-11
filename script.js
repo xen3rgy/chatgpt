@@ -85,6 +85,37 @@ function addFloatingIcons() {
     }
 }
 
+function addDeleteButtons() {
+    document.querySelectorAll('.entry').forEach(entry => {
+        const body = entry.querySelector('.card-body');
+        if (!body || body.querySelector('.admin-delete')) return;
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn btn-sm btn-outline-danger admin-delete';
+        delBtn.style.display = 'none';
+        delBtn.textContent = '🗑️';
+        delBtn.onclick = function() { deleteCard(delBtn); };
+        body.appendChild(delBtn);
+    });
+    if (typeof applyAdminMode === 'function') {
+        applyAdminMode();
+    }
+}
+
+function deleteCard(btn) {
+    if (!confirm('Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?')) {
+        return;
+    }
+    const entry = btn.closest('.entry');
+    if (!entry) return;
+    const id = entry.getAttribute('data-exhibit-id');
+    if (id) {
+        const exhibits = JSON.parse(localStorage.getItem('newExhibits') || '[]');
+        const updated = exhibits.filter(ex => ex.id !== id);
+        localStorage.setItem('newExhibits', JSON.stringify(updated));
+    }
+    entry.remove();
+}
+
 function sortCardsAlphabetically() {
     const container = document.getElementById("entries");
     const entries = Array.from(container.getElementsByClassName("entry"));
@@ -133,6 +164,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (window.location.pathname.endsWith("index.html") || window.location.pathname === "/") {
         sortCardsAlphabetically();
         loadNewExhibits();
+        addDeleteButtons();
     }
 	
 	document.getElementById("searchInput")?.addEventListener("input", filterEntries);
@@ -159,12 +191,14 @@ function addExhibitCard(ex) {
     const col = document.createElement('div');
     col.className = 'col-md-4 entry';
     col.setAttribute('data-tags', `${ex.manufacturer} ${ex.year}`);
+    col.setAttribute('data-exhibit-id', ex.id);
 
     col.innerHTML = `
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title"><a href="devices/dynamic_device.html?id=${ex.id}"><span id="title_${ex.id}">${ex.title} (${ex.year})</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_${ex.id}')" style="display:none;">✏️</button></h5>
                 <p class="card-text"><span id="text_${ex.id}">${ex.description}</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_${ex.id}')" style="display:none;">✏️</button></p>
+                <button class="btn btn-sm btn-outline-danger admin-delete" onclick="deleteCard(this)" style="display:none;">🗑️</button>
             </div>
         </div>`;
 
