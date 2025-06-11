@@ -257,7 +257,7 @@ function logoutAdmin() {
     applyAdminMode();
 }
 function applyAdminMode() {
-    document.querySelectorAll(".admin-edit").forEach(el => {
+    document.querySelectorAll(".admin-edit, .admin-delete").forEach(el => {
         el.style.display = sessionStorage.getItem("admin") === "true" ? "inline-block" : "none";
     });
     const addBtn = document.getElementById('addCardBtn');
