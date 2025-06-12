@@ -38,28 +38,36 @@ var groupedData = data.reduce(function(acc, row) {
  * @returns {Array} - Ein Array globaler Breiten (z.B. ["50px", "200px"]).
  */
 function calculateGlobalWidths() {
-    var maxWidths = columnNames.reduce((acc, column) => {
-        acc[column] = column.length * 10; // Header-Länge
-        return acc;
-    }, {});
+    // Vorherige Breiten entfernen, damit Browser die natürlichen Breiten berechnet
+    document.querySelectorAll('.table-container table').forEach(table => {
+        table.style.tableLayout = 'auto';
+        table.querySelectorAll('th').forEach(th => th.style.width = '');
+        table.querySelectorAll('td').forEach(td => td.style.width = '');
+    });
 
-    // Maximale Zellinhalt-Längen global berücksichtigen
-    data.forEach(row => {
-        columnNames.forEach(column => {
-            if (row[column]) {
-                var cellContent = String(row[column]);
-                var cellWidth = cellContent.length * 8; // Annäherung: 8px pro Zeichen
-                maxWidths[column] = Math.max(maxWidths[column], cellWidth);
-            }
+    var tables = document.querySelectorAll('.table-container table');
+    var maxWidths = new Array(columnNames.length).fill(0);
+
+    // Ermittelt die maximale Breite jeder Spalte über alle Tabellen hinweg
+    tables.forEach(table => {
+        var headerCells = table.querySelectorAll('th');
+        headerCells.forEach((cell, i) => {
+            maxWidths[i] = Math.max(maxWidths[i], cell.getBoundingClientRect().width);
+        });
+        var rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.querySelectorAll('td').forEach((cell, i) => {
+                maxWidths[i] = Math.max(maxWidths[i], cell.getBoundingClientRect().width);
+            });
         });
     });
 
-    // Breiten skalieren und begrenzen (z.B. minimale/maximale Breiten setzen)
-    return columnNames.map(column => {
-        var width = maxWidths[column];
-        if (width < 50) return "50px"; // Mindestens 50px
-        if (width > 300) return "300px"; // Höchstens 300px
-        return `${width}px`;
+    // Limits setzen und zurückgabe als px-String
+    return maxWidths.map(width => {
+        var w = Math.ceil(width);
+        if (w < 50) w = 50;
+        if (w > 300) w = 300;
+        return w + 'px';
     });
 }
 
@@ -73,12 +81,15 @@ function applyGlobalWidths() {
     tables.forEach(function(table) {
         var headerCells = table.querySelectorAll('th');
         var bodyCells = table.querySelectorAll('td');
-        for (var i = 0; i < headerCells.length; i++) {
-            headerCells[i].style.width = globalWidths[i];
-        }
-        for (var j = 0; j < bodyCells.length; j++) {
-            bodyCells[j].style.width = globalWidths[j % headerCells.length];
-        }
+
+        headerCells.forEach(function(cell, idx) {
+            cell.style.width = globalWidths[idx];
+        });
+        bodyCells.forEach(function(cell, idx) {
+            cell.style.width = globalWidths[idx % headerCells.length];
+        });
+
+        table.style.tableLayout = 'fixed';
     });
 }
 /**
@@ -332,18 +343,20 @@ function applyThreshold(newThreshold, categoryToSort = null, initialState = 'hid
     containerDiv.querySelectorAll('.table-container').forEach(table => table.remove());
 
     var sortedCategories = Object.keys(groupedData).sort();
-    var globalWidths = calculateGlobalWidths();
 
     for (var i = 0; i < sortedCategories.length; i++) {
         var table = createTable(
             groupedData[sortedCategories[i]],
             sortedCategories[i],
-            globalWidths, // Globale Breiten anwenden
+            null, // Breiten werden nach dem Rendern gesetzt
             newThreshold,
             sortedCategories[i] === categoryToSort ? initialState : 'hidden'
         );
         containerDiv.appendChild(table);
     }
+
+    // Nach dem Neuerstellen globale Spaltenbreiten anwenden
+    applyGlobalWidths();
 
     // Beibehaltung der Scrollposition
     containerDiv.scrollTop = scrollPosition;

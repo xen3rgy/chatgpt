@@ -48,9 +48,9 @@ th, td {
     text-align: left;
     padding: 8px;
     border: 1px solid #ddd; /* Leichte Umrandung für bessere Lesbarkeit */
-    overflow: hidden;
-    white-space: nowrap; /* Kein Umbruch in den Zellen */
-    text-overflow: ellipsis; /* "..." bei abgeschnittenem Text */
+    word-break: break-word; /* Umbruch langer Wörter */
+    white-space: normal; /* Mehrzeilige Inhalte erlauben */
+    overflow-wrap: anywhere; /* Bricht lange Tokens zur Not um */
 }
 
 /* Header-Styling */
