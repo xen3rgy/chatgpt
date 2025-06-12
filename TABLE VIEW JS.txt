@@ -38,27 +38,36 @@ var groupedData = data.reduce(function(acc, row) {
  * @returns {Array} - Ein Array globaler Breiten (z.B. ["50px", "200px"]).
  */
 function calculateGlobalWidths() {
-    // Vorherige Breiten entfernen, damit Browser die natürlichen Breiten berechnet
-    document.querySelectorAll('.table-container table').forEach(table => {
-        table.style.tableLayout = 'auto';
-        table.querySelectorAll('th').forEach(th => th.style.width = '');
-        table.querySelectorAll('td').forEach(td => td.style.width = '');
-    });
-
+    // Vorherige Breiten entfernen und natürliche Breiten ohne Zeilenumbruch ermöglichen
     var tables = document.querySelectorAll('.table-container table');
+    tables.forEach(table => {
+        table.style.tableLayout = 'auto';
+        table.style.width = 'auto';
+        table.querySelectorAll('th, td').forEach(cell => {
+            cell.style.width = 'auto';
+            cell.style.whiteSpace = 'nowrap';
+        });
+    });
     var maxWidths = new Array(columnNames.length).fill(0);
 
     // Ermittelt die maximale Breite jeder Spalte über alle Tabellen hinweg
     tables.forEach(table => {
         var headerCells = table.querySelectorAll('th');
         headerCells.forEach((cell, i) => {
-            maxWidths[i] = Math.max(maxWidths[i], cell.getBoundingClientRect().width);
+            maxWidths[i] = Math.max(maxWidths[i], cell.scrollWidth);
         });
         var rows = table.querySelectorAll('tbody tr');
         rows.forEach(row => {
             row.querySelectorAll('td').forEach((cell, i) => {
-                maxWidths[i] = Math.max(maxWidths[i], cell.getBoundingClientRect().width);
+                maxWidths[i] = Math.max(maxWidths[i], cell.scrollWidth);
             });
+        });
+    });
+
+    // WhiteSpace zurücksetzen
+    tables.forEach(table => {
+        table.querySelectorAll('th, td').forEach(cell => {
+            cell.style.whiteSpace = '';
         });
     });
 
@@ -90,6 +99,7 @@ function applyGlobalWidths() {
         });
 
         table.style.tableLayout = 'fixed';
+        table.style.width = globalWidths.reduce((sum, w) => sum + parseInt(w), 0) + 'px';
     });
 }
 /**

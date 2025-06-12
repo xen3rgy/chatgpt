@@ -38,10 +38,10 @@ body {
 
 /* Tabellen-Basis-Styling */
 table {
-    width: 100%;
+    width: auto; /* Breite richtet sich nach dem Inhalt */
     margin: 20px auto;
     border-collapse: collapse;
-    table-layout: auto; /* Ermöglicht dynamische Breiten basierend auf Inhalt */
+    table-layout: fixed; /* Feste Breiten nach Berechnung */
 }
 
 th, td {
