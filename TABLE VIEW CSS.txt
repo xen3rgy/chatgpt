@@ -209,3 +209,39 @@ td, th {
     margin: 10px 0;
     opacity: 0.8;
 }
+
+/* Container fuer Tabellen: nutzt immer die komplette Breite */
+#container-div, .table-container {
+    width: 100%;
+}
+
+/* Tabellen reagieren auf kleine Bildschirme durch kleinere Schrift und weniger Padding */
+@media (max-width: 1200px) {
+    .overview-table {
+        font-size: 0.9em;
+    }
+    .overview-table th,
+    .overview-table td {
+        padding: 6px;
+    }
+}
+
+@media (max-width: 900px) {
+    .overview-table {
+        font-size: 0.8em;
+    }
+    .overview-table th,
+    .overview-table td {
+        padding: 4px;
+    }
+}
+
+@media (max-width: 600px) {
+    .overview-table {
+        font-size: 0.7em;
+    }
+    .overview-table th,
+    .overview-table td {
+        padding: 2px;
+    }
+}

@@ -102,6 +102,25 @@ function applyGlobalWidths() {
         table.style.width = globalWidths.reduce((sum, w) => sum + parseInt(w), 0) + 'px';
     });
 }
+
+/**
+ * Passt die Tabellengroesse an das umgebende Element an.
+ * Wenn die berechnete Breite groesser als der verfuegbare Platz ist,
+ * wird die Tabelle proportional skaliert, sodass keine Scrollbalken entstehen.
+ */
+function scaleTables() {
+    var tables = document.querySelectorAll('.table-container table');
+    tables.forEach(function(table) {
+        table.style.transform = 'scale(1)';
+        table.style.transformOrigin = 'top left';
+        var containerWidth = table.parentElement.clientWidth;
+        var tableWidth = table.scrollWidth;
+        if (tableWidth > containerWidth) {
+            var scale = containerWidth / tableWidth;
+            table.style.transform = 'scale(' + scale + ')';
+        }
+    });
+}
 /**
  * Synchronisiert die Scrollbewegung zwischen dem Header und der darunterliegenden Tabelle.
  */
@@ -367,6 +386,7 @@ function applyThreshold(newThreshold, categoryToSort = null, initialState = 'hid
 
     // Nach dem Neuerstellen globale Spaltenbreiten anwenden
     applyGlobalWidths();
+    scaleTables();
 
     // Beibehaltung der Scrollposition
     containerDiv.scrollTop = scrollPosition;
@@ -431,9 +451,11 @@ function initialSetup() {
     setTimeout(function() {
         // Globale Spaltenbreiten berechnen und anwenden
         applyGlobalWidths();
+        scaleTables();
 
         window.addEventListener('resize', function() {
             applyGlobalWidths();
+            scaleTables();
             updateOverviewText(parseFloat(document.getElementById('threshold-slider').value));
         });
     }, 0);
