@@ -1,0 +1,211 @@
+/* Schriftarten */
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-Mono-webfont.eot');
+    src: url('Roboto-ThinItalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Roboto-ThinItalic-webfont.woff') format('woff'),
+         url('Roboto-ThinItalic-webfont.ttf') format('truetype'),
+         url('Roboto-ThinItalic-webfont.svg#RobotoThinItalic') format('svg');
+}
+
+/* Basis-Styling */
+body {
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Titel- und Header-Styling */
+.title-class, .title-container {
+    color: #045cac;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#plot {
+    width: 100%;
+    height: 500px;
+    display: flex;
+}
+
+.table-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: white;
+}
+
+/* Tabellen-Basis-Styling */
+table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    table-layout: auto; /* Ermöglicht dynamische Breiten basierend auf Inhalt */
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd; /* Leichte Umrandung für bessere Lesbarkeit */
+    overflow: hidden;
+    white-space: nowrap; /* Kein Umbruch in den Zellen */
+    text-overflow: ellipsis; /* "..." bei abgeschnittenem Text */
+}
+
+/* Header-Styling */
+thead {
+    position: sticky; /* Header bleibt sichtbar beim Scrollen */
+    top: 0;
+    z-index: 2;
+    background-color: #045cac; /* Auffällige Farbe für den Header */
+    color: white;
+    font-weight: bold;
+}
+
+#sort-table-header {
+    position: relative;
+    cursor: pointer;
+    background-color: #045cac;
+    color: #f7e7f7;
+    font-weight: 700;
+    transition: background-color 0.75s, color 0.37s;
+}
+
+#sort-table-header:hover {
+    background-color: #017dc7;
+    color: white;
+}
+
+/* Tooltip-Styling für sortierbare Header */
+#sort-table-header::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #a4acbc;
+    color: #ffffff;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    font-size: 12px;
+}
+
+#sort-table-header:hover::after {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+/* Tabellenzeilen */
+.overview-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Heller Hintergrund für geradzahlige Zeilen */
+}
+
+.overview-table tbody tr:hover {
+    background-color: #e9ecef; /* Hervorhebung bei Hover */
+}
+
+.overview-table tbody tr:last-child {
+    border-bottom: 2px solid #fff;
+}
+
+/* "Show/Hide All"-Zeile */
+.overview-table tbody tr:last-child td {
+    text-align: center;
+    font-weight: bold;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    color: #045cac;
+}
+
+.overview-table tbody tr:last-child:hover td {
+    background-color: #017dc7;
+    color: white;
+}
+
+/* Spaltenüberschriften und Zellen */
+td, th {
+    vertical-align: middle;
+    overflow: hidden;
+    max-width: 300px; /* Optional: Maximale Breite für Zellen */
+}
+
+/* Slider-Styling */
+#slider-container {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+#slider-label {
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#threshold-slider {
+    flex-grow: 0;
+    cursor: pointer;
+    width: 150px;
+    margin-left: 0;
+}
+
+#slider-value {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* Titel der Kategorien */
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f8ff;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-left: 4px solid #045cac;
+    border-radius: 5px;
+}
+
+.title-left {
+    color: #045cac;
+}
+
+.title-right {
+    color: #343a40;
+    font-weight: normal;
+}
+
+/* Gesamtübersicht */
+#total-text {
+    text-align: right;
+    margin-right: 20px;
+}
+
+/* Toggle-Tabelle */
+#toggle-table {
+    cursor: pointer;
+    background-color: #fefefe;
+    color: #045cac;
+    font-size: 22px;
+    font-weight: 900;
+    border-radius: 5px;
+    margin: 10px auto 20px auto;
+}
+
+#toggle-table:hover {
+    background-color: #045cac;
+    color: white;
+}
+
+/* Horizontale Linie als Separator */
+.blue-separator {
+    border-top: 3px solid #045cac;
+    margin: 10px 0;
+    opacity: 0.8;
+}

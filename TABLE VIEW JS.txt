@@ -1,0 +1,459 @@
+var columnNames = knimeDataTable.getColumnNames();
+var columnsData = {};
+columnNames.forEach(function(columnName) {
+    columnsData[columnName] = knimeDataTable.getColumn(columnName) || [];
+});
+
+var categoryColumn = '$${ScategoryColumn}$$';
+var svalueColumn = '$${SvalueColumn}$$';
+var scountingColumn = '$${Scounting-Column}$$';
+var ihideInWizard = '$${IhideInWizard}$$';
+
+var initialSliderValue = '$${DtreshHold}$$';
+var initialThreshold = parseFloat('$${DtreshHold}$$');
+var totalCount, sumOfRows;
+
+var data = [];
+var numRows = columnsData[columnNames[0]].length;
+for (var i = 0; i < numRows; i++) {
+    var row = {};
+    columnNames.forEach(function(columnName) {
+        row[columnName] = columnsData[columnName][i];
+    });
+    data.push(row);
+}
+
+var groupedData = data.reduce(function(acc, row) {
+    var category = row[categoryColumn];
+    if (!acc[category]) {
+        acc[category] = [];
+    }
+    acc[category].push(row);
+    return acc;
+}, {});
+
+/**
+ * Berechnet die Breiten der Spalten global über alle Gruppen hinweg.
+ * Die maximale Breite jeder Spalte wird auf alle Zeilen angewendet.
+ * @returns {Array} - Ein Array globaler Breiten (z.B. ["50px", "200px"]).
+ */
+function calculateGlobalWidths() {
+    var maxWidths = columnNames.reduce((acc, column) => {
+        acc[column] = column.length * 10; // Header-Länge
+        return acc;
+    }, {});
+
+    // Maximale Zellinhalt-Längen global berücksichtigen
+    data.forEach(row => {
+        columnNames.forEach(column => {
+            if (row[column]) {
+                var cellContent = String(row[column]);
+                var cellWidth = cellContent.length * 8; // Annäherung: 8px pro Zeichen
+                maxWidths[column] = Math.max(maxWidths[column], cellWidth);
+            }
+        });
+    });
+
+    // Breiten skalieren und begrenzen (z.B. minimale/maximale Breiten setzen)
+    return columnNames.map(column => {
+        var width = maxWidths[column];
+        if (width < 50) return "50px"; // Mindestens 50px
+        if (width > 300) return "300px"; // Höchstens 300px
+        return `${width}px`;
+    });
+}
+
+/**
+ * Wendet die global berechneten Breiten auf alle Tabellen an.
+ */
+function applyGlobalWidths() {
+    var globalWidths = calculateGlobalWidths();
+    var tables = document.querySelectorAll('.table-container table');
+
+    tables.forEach(function(table) {
+        var headerCells = table.querySelectorAll('th');
+        var bodyCells = table.querySelectorAll('td');
+        for (var i = 0; i < headerCells.length; i++) {
+            headerCells[i].style.width = globalWidths[i];
+        }
+        for (var j = 0; j < bodyCells.length; j++) {
+            bodyCells[j].style.width = globalWidths[j % headerCells.length];
+        }
+    });
+}
+/**
+ * Synchronisiert die Scrollbewegung zwischen dem Header und der darunterliegenden Tabelle.
+ */
+function syncScroll() {
+    const tables = document.querySelectorAll('.table-container table');
+    tables.forEach(table => {
+        table.addEventListener('scroll', (event) => {
+            const headerTable = document.querySelector('.header-table');
+            if (headerTable) {
+                headerTable.scrollLeft = event.target.scrollLeft;
+            }
+        });
+    });
+}
+
+/**
+ * Erstellt einen Slider für die dynamische Einstellung des Schwellenwerts.
+ */
+function createSlider() {
+    var sliderContainer = document.createElement('div');
+    sliderContainer.id = 'slider-container';
+
+    var sliderLabel = document.createElement('label');
+    sliderLabel.innerText = 'Standtage: ';
+    sliderLabel.id = 'slider-label';
+
+    var slider = document.createElement('input');
+    slider.type = 'range';
+    slider.id = 'threshold-slider';
+    slider.min = 0.0;
+    slider.max = 10.0;
+    slider.value = initialThreshold;
+    slider.step = 0.1;
+
+    var sliderValueDisplay = document.createElement('span');
+    sliderValueDisplay.id = 'slider-value';
+    sliderValueDisplay.innerText = " ≥ " + slider.value;
+
+    slider.oninput = function() {
+        sliderValueDisplay.innerText = slider.value;
+        updateOverviewText(slider.value);
+        applyThreshold(parseFloat(slider.value));
+    };
+
+    sliderContainer.appendChild(sliderLabel);
+    sliderContainer.appendChild(slider);
+    sliderContainer.appendChild(sliderValueDisplay);
+
+    return sliderContainer;
+}
+
+/**
+ * Aktualisiert den Überblickstext basierend auf dem aktuellen Schwellenwert.
+ * @param {number} value - Der Schwellenwert.
+ */
+function updateOverviewText(value) {
+    var overviewText = document.getElementById('overview-text');
+    if (overviewText) {
+        overviewText.innerText = `$${ScategoryTableTitle}$$ (Standtage ≥ ${value})`;
+    }
+}
+/**
+ * Fügt die Überschrift für eine Gruppe ein.
+ * @param {string} category - Die Kategorie, die diese Tabelle repräsentiert.
+ * @param {number} categorySumOfRows - Die Anzahl der Zeilen in dieser Kategorie.
+ * @param {number} categoryTotalCount - Die Gesamtanzahl der Wafer in dieser Kategorie.
+ * @returns {HTMLElement} - Der Container mit der Überschrift.
+ */
+function createTitle(category, categorySumOfRows, categoryTotalCount) {
+    var titleContainer = document.createElement('div');
+    titleContainer.className = 'title-container';
+
+    var titleLeft = document.createElement('span');
+    titleLeft.className = 'title-left';
+    titleLeft.innerText = category;
+
+    var titleRight = document.createElement('span');
+    titleRight.className = 'title-right';
+    titleRight.innerText = "Total : " + categorySumOfRows + " Lot(s) / " + categoryTotalCount + " Wafer";
+
+    titleContainer.appendChild(titleLeft);
+    titleContainer.appendChild(titleRight);
+
+    return titleContainer;
+}
+
+/**
+ * Erstellt eine Tabelle für die gegebene Kategorie und Daten.
+ * @param {Array} data - Die Daten, die in der Tabelle angezeigt werden sollen.
+ * @param {string} category - Die Kategorie, die diese Tabelle repräsentiert.
+ * @param {Array} uniformWidths - Array von Breitenwerten für jede Spalte.
+ * @param {number} threshold - Der Schwellenwert, um die Daten zu filtern.
+ * @param {string} initialState - Der Anfangszustand (z.B. "hidden" für ausgeblendete Zeilen).
+ * @returns {HTMLElement} - Der Container mit der Tabelle.
+ */
+function createTable(data, category, uniformWidths = null, threshold = initialThreshold, initialState = 'hidden') {
+    var container = document.createElement('div');
+    container.id = 'table-container-' + category;
+    container.className = 'table-container';
+
+    var filteredData = data.filter(row => parseFloat(row[svalueColumn]) >= threshold);
+    var categoryTotalCount = filteredData.reduce((sum, row) => sum + parseFloat(row[scountingColumn] || 0), 0);
+    var categorySumOfRows = filteredData.length;
+
+    var title = createTitle(category, categorySumOfRows, categoryTotalCount);
+    container.appendChild(title);
+
+    var table = document.createElement('table');
+    table.className = 'overview-table';
+
+    var thead = document.createElement('thead');
+    var headerRow = document.createElement('tr');
+    var headers = Object.keys(data[0]).filter(header => header !== svalueColumn);
+
+    headers.forEach(function(header, index) {
+        var th = document.createElement('th');
+        th.id = 'sort-table-header';
+        th.setAttribute('data-tooltip', 'Click to SORT');
+        th.innerText = header;
+
+        if (uniformWidths) {
+            th.style.width = uniformWidths[index];
+        }
+
+        th.addEventListener('click', function() {
+            sortTable(category, header);
+        });
+        headerRow.appendChild(th);
+    });
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    var tbody = document.createElement('tbody');
+    var initialHiddenRows = [];
+    data.forEach(function(row) {
+        var tr = document.createElement('tr');
+        if (parseFloat(row[svalueColumn]) < threshold) {
+            tr.dataset.initialDisplay = 'none';
+            if (initialState === 'hidden') {
+                tr.style.display = 'none';
+            }
+            initialHiddenRows.push(tr);
+        } else {
+            tr.dataset.initialDisplay = '';
+        }
+
+        headers.forEach(function(header, index) {
+            var td = document.createElement('td');
+            if (typeof row[header] === 'string' && row[header].startsWith('<')) {
+                td.innerHTML = row[header];
+            } else {
+                td.innerText = row[header];
+                td.style.overflow = 'hidden';
+            }
+
+            // Neuer Code: Bedingung für die Spalte "HC"
+            if (header === "HC" && row[header] && !row[header].includes("/")) {
+                td.style.color = "red"; // Färbt den Text rot
+                td.style.fontWeight = "bold"; // Optional: Fett
+            }
+
+            if (uniformWidths) {
+                td.style.width = uniformWidths[index];
+            }
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+
+    // "Show All" oder "Hide" Row
+    var showAllRow = document.createElement('tr');
+    var showAllCell = document.createElement('td');
+    showAllCell.colSpan = headers.length;
+    showAllCell.style.cursor = 'pointer';
+    showAllCell.style.color = '#045cac';
+
+    var allRowsVisible = initialState === 'visible';
+    showAllCell.innerText = initialHiddenRows.length === 0
+        ? "Nothing more to display"
+        : (allRowsVisible
+            ? "Hide < " + threshold + " " + svalueColumn
+            : "Show all < " + threshold + " " + svalueColumn);
+
+    showAllCell.addEventListener('click', function() {
+        allRowsVisible = !allRowsVisible;
+        tbody.querySelectorAll('tr').forEach(function(row) {
+            row.style.display = allRowsVisible || row.dataset.initialDisplay !== 'none' ? '' : 'none';
+        });
+
+        showAllCell.innerText = allRowsVisible
+            ? "Hide < " + threshold + " " + svalueColumn
+            : "Show < " + threshold + " " + svalueColumn;
+    });
+
+    showAllRow.appendChild(showAllCell);
+    tbody.appendChild(showAllRow);
+
+    container.appendChild(table);
+    return container;
+}
+
+/**
+ * Sortiert die Tabelle basierend auf einer bestimmten Spalte.
+ * @param {string} category - Die Kategorie, deren Tabelle sortiert werden soll.
+ * @param {string} key - Der Schlüssel/Spaltenname, nach dem sortiert werden soll.
+ */
+function sortTable(category, key) {
+    var scrollPosition = window.scrollY || window.pageYOffset;
+
+    var tableContainer = document.getElementById('table-container-' + category);
+    var tableRows = tableContainer.querySelector('tbody').querySelectorAll('tr');
+    var isExpanded = Array.from(tableRows).some(row => row.style.display !== 'none');
+
+    var sortOrder = groupedData[category].sortOrder = (groupedData[category].sortOrder === 'asc' ? 'desc' : 'asc');
+    groupedData[category].sort(function(a, b) {
+        if (a[key] > b[key]) {
+            return sortOrder === 'asc' ? 1 : -1;
+        }
+        if (a[key] < b[key]) {
+            return sortOrder === 'asc' ? -1 : 1;
+        }
+        if (parseFloat(a[svalueColumn]) > parseFloat(b[svalueColumn])) {
+            return -1;
+        }
+        if (parseFloat(a[svalueColumn]) < parseFloat(b[svalueColumn])) {
+            return 1;
+        }
+        return 0;
+    });
+
+    applyThreshold(parseFloat(document.getElementById('threshold-slider').value), category, isExpanded ? 'hidden' : 'visible');
+    window.scrollTo(0, scrollPosition);
+}
+/**
+ * Wendet den Schwellenwert auf die gefilterten Daten an und rendert die Tabellen neu.
+ * @param {number} newThreshold - Der neue Schwellenwert.
+ * @param {string|null} categoryToSort - Optional: Eine spezifische Kategorie, die sortiert werden soll.
+ * @param {string} initialState - Der Anfangszustand (z.B. "hidden" für ausgeblendete Zeilen).
+ */
+function applyThreshold(newThreshold, categoryToSort = null, initialState = 'hidden') {
+    var containerDiv = document.getElementById('container-div');
+    var scrollPosition = containerDiv.scrollTop;
+
+    // Entfernt bestehende Tabellen
+    containerDiv.querySelectorAll('.table-container').forEach(table => table.remove());
+
+    var sortedCategories = Object.keys(groupedData).sort();
+    var globalWidths = calculateGlobalWidths();
+
+    for (var i = 0; i < sortedCategories.length; i++) {
+        var table = createTable(
+            groupedData[sortedCategories[i]],
+            sortedCategories[i],
+            globalWidths, // Globale Breiten anwenden
+            newThreshold,
+            sortedCategories[i] === categoryToSort ? initialState : 'hidden'
+        );
+        containerDiv.appendChild(table);
+    }
+
+    // Beibehaltung der Scrollposition
+    containerDiv.scrollTop = scrollPosition;
+
+    updateOverallTotals(newThreshold);
+}
+
+/**
+ * Aktualisiert die Gesamtzahlen basierend auf dem Schwellenwert.
+ * @param {number} threshold - Der aktuelle Schwellenwert für die Filterung.
+ */
+function updateOverallTotals(threshold) {
+    var filteredData = data.filter(row => parseFloat(row[svalueColumn]) >= threshold);
+    totalCount = filteredData.reduce((sum, row) => sum + parseFloat(row[scountingColumn] || 0), 0);
+    sumOfRows = filteredData.length;
+
+    var totalTextElement = document.getElementById('total-text');
+    if (totalTextElement) {
+        totalTextElement.innerText = `Total : ${sumOfRows} Lot(s) / ${totalCount} Wafer`;
+    }
+}
+
+/**
+ * Toggle-Funktion zum Umschalten der Tabellenanzeige.
+ */
+function toggleVisibility() {
+    var containerDiv = document.getElementById('container-div');
+    containerDiv.style.display = ihideInWizard ? 'none' : '';
+    ihideInWizard = (ihideInWizard == 1) ? 0 : 1;
+    updateOverviewText(document.getElementById('threshold-slider').value);
+    applyThreshold(parseFloat(document.getElementById('threshold-slider').value));
+}
+
+/**
+ * Fügt alle Tabellen und Steuerungselemente in die Seite ein und synchronisiert sie.
+ * Initialisiert die Anwendung und sorgt für einheitliche Breiten und Scrollsynchronisation.
+ */
+function initialSetup() {
+    injectHTML(initialThreshold);
+
+    var containerDiv = document.createElement('div');
+    containerDiv.id = 'container-div';
+
+    var sliderContainer = createSlider();
+    containerDiv.appendChild(sliderContainer);
+    initialSliderValue = initialThreshold;
+
+    var sortedCategories = Object.keys(groupedData).sort();
+
+    sortedCategories.forEach(category => {
+        var table = createTable(
+            groupedData[category],
+            category,
+            null, // Breiten werden später gesetzt
+            initialSliderValue
+        );
+        containerDiv.appendChild(table);
+    });
+
+    document.body.appendChild(containerDiv);
+
+    setTimeout(function() {
+        // Globale Spaltenbreiten berechnen und anwenden
+        applyGlobalWidths();
+
+        window.addEventListener('resize', function() {
+            applyGlobalWidths();
+            updateOverviewText(parseFloat(document.getElementById('threshold-slider').value));
+        });
+    }, 0);
+
+    updateOverviewText(initialSliderValue);
+    applyThreshold(parseFloat(document.getElementById('threshold-slider').value));
+}
+
+/**
+ * Fügt die HTML-Struktur für den Überblicksbereich ein.
+ */
+function injectHTML(initialSliderValue) {
+    var container = document.createElement('div');
+    container.className = 'table-wrapper';
+
+    var table = document.createElement('table');
+    table.id = 'toggle-table';
+
+    var row = document.createElement('tr');
+    row.setAttribute('data-tooltip', 'Click to show Lots');
+    var cell1 = document.createElement('td');
+    cell1.id = 'overview-text';
+    cell1.innerText = `$${ScategoryTableTitle}$$ (Standtage ≥ ${initialSliderValue})`;
+
+    var cell2 = document.createElement('td');
+    cell2.id = 'total-text';
+
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    table.appendChild(row);
+    container.appendChild(document.createElement('hr')).className = 'blue-separator';
+    container.appendChild(table);
+    container.appendChild(document.createElement('hr')).className = 'blue-separator';
+
+    document.body.appendChild(container);
+
+    table.style.cursor = 'pointer';
+    table.addEventListener('click', function() {
+        toggleVisibility();
+    });
+}
+
+/**
+ * Initialisiert die Anwendung.
+ */
+initialSetup();
