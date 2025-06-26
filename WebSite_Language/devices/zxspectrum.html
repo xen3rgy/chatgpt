@@ -11,6 +11,10 @@
 <body>
 <div class="container my-5">
 <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
+<div class="btn-group ms-2 mb-3" role="group" aria-label="Language selector">
+  <button class="btn language-btn btn-sm">DE</button>
+  <button class="btn language-btn btn-sm">EN</button>
+</div>
 <a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
 <h1 class="mb-3">Sinclair ZX Spectrum (1982)</h1>
 <p><strong>Hersteller:</strong><span id="hersteller"> Sinclair</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
@@ -112,6 +116,7 @@ function editField(id) {
 </div>
 </div>
 </div>
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>
