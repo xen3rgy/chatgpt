@@ -209,3 +209,45 @@ function loadNewExhibits() {
     const exhibits = JSON.parse(localStorage.getItem('newExhibits') || '[]');
     exhibits.forEach(ex => addExhibitCard(ex));
 }
+
+const pageTranslations = {
+  'index.html': typeof translations_index !== 'undefined' ? translations_index : null,
+  'add_exhibit.html': typeof translations_add !== 'undefined' ? translations_add : null
+};
+
+function applyLanguage() {
+  const lang = localStorage.getItem('lang') || 'de';
+  document.documentElement.lang = lang;
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const map = pageTranslations[page];
+  if (!map) return;
+  for (const id in map) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (!el.dataset.de) el.dataset.de = el.innerText;
+    el.innerText = (lang === 'en') ? map[id] : el.dataset.de;
+  }
+  if (page === 'index.html') {
+    const input = document.getElementById('searchInput');
+    if (input) {
+      if (!input.dataset.de) input.dataset.de = input.placeholder;
+      input.placeholder = (lang === 'en') ? 'Search by manufacturer or year...' : input.dataset.de;
+    }
+    const title = document.getElementById('pageTitle');
+    if (title) {
+      if (!title.dataset.de) title.dataset.de = title.innerText;
+      title.innerText = (lang === 'en') ? 'Classic Computing Showcase' : title.dataset.de;
+    }
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.language-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.textContent.trim().toLowerCase();
+      localStorage.setItem('lang', lang);
+      applyLanguage();
+    });
+  });
+  applyLanguage();
+});
