@@ -196,6 +196,23 @@ h1::before {
   box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
 }
 
+/* Language Toggle Buttons */
+.language-btn {
+  background-color: var(--secondary-color);
+  color: #fff;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+.language-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+}
+
+.dark-mode .language-btn {
+  background-color: #666;
+  color: #fff;
+}
+
 /* Typewriter Effect für Footer */
 @keyframes typewriter {
   from { width: 0; }

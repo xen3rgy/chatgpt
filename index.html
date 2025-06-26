@@ -9,7 +9,17 @@
 </head>
 <body>
 <div class="container my-5">
-<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="mb-0">Classic Computing Vitrine</h1><div><button id="addCardBtn" class="btn btn-success me-2" onclick="location.href='add_exhibit.html'" style="display:none;">➕</button><button class="btn btn-dark ms-2" onclick="toggleTheme()">🌙 Dark Mode</button></div></div>
+<div class="d-flex align-items-center mb-3">
+  <h1 id="pageTitle" class="mb-0 me-auto">Classic Computing Vitrine</h1>
+  <div class="d-flex align-items-center gap-2">
+    <div class="btn-group me-2" role="group" aria-label="Language selector">
+      <button class="btn language-btn btn-sm">DE</button>
+      <button class="btn language-btn btn-sm">EN</button>
+    </div>
+    <button id="addCardBtn" class="btn btn-success me-2" onclick="location.href='add_exhibit.html'" style="display:none;">➕</button>
+    <button class="btn btn-dark" onclick="toggleTheme()">🌙 Dark Mode</button>
+  </div>
+</div>
 <input class="form-control mb-4" id="searchInput" onkeyup="filterEntries()" placeholder="Suche nach Hersteller oder Jahr..." type="text"/>
 <div class="row" id="entries">
 <div class="col-md-4 entry" data-tags="MITS 1975">
@@ -198,6 +208,7 @@
 </div>
 </div>
 </div>
+<script src="translations.js"></script>
 <script src="script.js"></script>
 <footer>
     © 2025 Classic Computing Vitrine – FH Kärnten
