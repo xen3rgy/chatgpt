@@ -213,6 +213,31 @@ function loadNewExhibits() {
 const pageTranslations = {
   'index.html': typeof translations_index !== 'undefined' ? translations_index : null,
   'add_exhibit.html': typeof translations_add !== 'undefined' ? translations_add : null
+  "altair8800.html": typeof translations_altair8800 !== "undefined" ? translations_altair8800 : null,
+  "atari1040st.html": typeof translations_atari1040st !== "undefined" ? translations_atari1040st : null,
+  "atarifolio.html": typeof translations_atarifolio !== "undefined" ? translations_atarifolio : null,
+  "c16.html": typeof translations_c16 !== "undefined" ? translations_c16 : null,
+  "c64.html": typeof translations_c64 !== "undefined" ? translations_c64 : null,
+  "c64c.html": typeof translations_c64c !== "undefined" ? translations_c64c : null,
+  "cambridgez88.html": typeof translations_cambridgez88 !== "undefined" ? translations_cambridgez88 : null,
+  "commodore1541.html": typeof translations_commodore1541 !== "undefined" ? translations_commodore1541 : null,
+  "cp1.html": typeof translations_cp1 !== "undefined" ? translations_cp1 : null,
+  "datasette.html": typeof translations_datasette !== "undefined" ? translations_datasette : null,
+  "dynamic_device.html": typeof translations_dynamic_device !== "undefined" ? translations_dynamic_device : null,
+  "geraet24.html": typeof translations_geraet24 !== "undefined" ? translations_geraet24 : null,
+  "hp45.html": typeof translations_hp45 !== "undefined" ? translations_hp45 : null,
+  "hp95lx.html": typeof translations_hp95lx !== "undefined" ? translations_hp95lx : null,
+  "hx20.html": typeof translations_hx20 !== "undefined" ? translations_hx20 : null,
+  "kenbak.html": typeof translations_kenbak !== "undefined" ? translations_kenbak : null,
+  "pc1251.html": typeof translations_pc1251 !== "undefined" ? translations_pc1251 : null,
+  "pc1403.html": typeof translations_pc1403 !== "undefined" ? translations_pc1403 : null,
+  "rd720.html": typeof translations_rd720 !== "undefined" ? translations_rd720 : null,
+  "tamaya.html": typeof translations_tamaya !== "undefined" ? translations_tamaya : null,
+  "ti994a.html": typeof translations_ti994a !== "undefined" ? translations_ti994a : null,
+  "tisr56.html": typeof translations_tisr56 !== "undefined" ? translations_tisr56 : null,
+  "triumphator.html": typeof translations_triumphator !== "undefined" ? translations_triumphator : null,
+  "zx81.html": typeof translations_zx81 !== "undefined" ? translations_zx81 : null,
+  "zxspectrum.html": typeof translations_zxspectrum !== "undefined" ? translations_zxspectrum : null,
 };
 
 function applyLanguage() {

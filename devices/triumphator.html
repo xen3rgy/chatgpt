@@ -11,14 +11,14 @@
 <body>
 <div class="container my-5">
 <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
-<a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
-<h1 class="mb-3">Triumphator CN1</h1>
-<p><strong>Hersteller:</strong><span id="hersteller"> VEB Triumphator-Werk DDR</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
-<h3>Technische Daten</h3>
+<a class="btn btn-secondary mb-3" href="../index.html" id="backLink">← Zurück</a>
+<h1 id="pageTitle" class="mb-3">Triumphator CN1</h1>
+<p><strong id="labelMan">Hersteller:</strong><span id="hersteller"> VEB Triumphator-Werk DDR</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
+<h3 id="techHeading">Technische Daten</h3>
 <ul>
 <li><span id="tech_0">System: Sprossenrad, Odhner-Prinzip</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_0')" style="display:none;">✏️</button></li><li><span id="tech_1">Stellen: 10×8×13 (Eingabe×Umdrehung×Ergebnis)</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_1')" style="display:none;">✏️</button></li><li><span id="tech_2">Antrieb: Handkurbel</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_2')" style="display:none;">✏️</button></li><li><span id="tech_3">Material: Eisen</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_3')" style="display:none;">✏️</button></li><li><span id="tech_4">Maße: ca. 26×13×13,5 cm</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_4')" style="display:none;">✏️</button></li>
 </ul>
-<h3>Historische Bedeutung</h3>
+<h3 id="histHeading">Historische Bedeutung</h3>
 <p id="bedeutung">Mechanische Rechenmaschine der DDR. Zuverlässig, robust, für Büro und Technik – gebaut von 1956–1958.<button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('bedeutung')" style="display:none;">✏️</button></p>
 </div>
 
@@ -112,6 +112,7 @@ function editField(id) {
 </div>
 </div>
 </div>
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>

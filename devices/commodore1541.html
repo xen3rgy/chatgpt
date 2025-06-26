@@ -11,17 +11,17 @@
 <body>
 <div class="container my-5">
 <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
-<a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
-<h1>Commodore 1541-II (1987)</h1>
-<p><strong>Hersteller:</strong><span id="hersteller"> Commodore</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
-<h3>Technische Daten</h3>
+<a class="btn btn-secondary mb-3" href="../index.html" id="backLink">← Zurück</a>
+<h1 id="pageTitle">Commodore 1541-II (1987)</h1>
+<p><strong id="labelMan">Hersteller:</strong><span id="hersteller"> Commodore</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
+<h3 id="techHeading">Technische Daten</h3>
 <ul>
 <li><span id="tech_0">5,25″-Diskettenlaufwerk, 170 KB pro Seite</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_0')" style="display:none;">✏️</button></li>
 <li><span id="tech_1">MOS 6502 CPU, 1 MHz</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_1')" style="display:none;">✏️</button></li>
 <li><span id="tech_2">Serielle IEC-Schnittstelle</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_2')" style="display:none;">✏️</button></li>
 <li><span id="tech_3">Externe Stromversorgung</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_3')" style="display:none;">✏️</button></li>
 </ul>
-<h3>Historische Bedeutung</h3>
+<h3 id="histHeading">Historische Bedeutung</h3>
 <p id="bedeutung">Verbessertes Standardlaufwerk für C64. Robuster, kühler und langlebiger als Vorgängermodelle. Grundpfeiler der C64-Softwareverbreitung.<button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('bedeutung')" style="display:none;">✏️</button></p>
 </div>
 
@@ -115,6 +115,7 @@ function editField(id) {
 </div>
 </div>
 </div>
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>

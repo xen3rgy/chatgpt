@@ -11,14 +11,14 @@
 <body>
 <div class="container my-5">
 <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
-<a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
-<h1 class="mb-3">Epson HX-20 (1982)</h1>
-<p><strong>Hersteller:</strong><span id="hersteller"> Epson</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
-<h3>Technische Daten</h3>
+<a class="btn btn-secondary mb-3" href="../index.html" id="backLink">← Zurück</a>
+<h1 id="pageTitle" class="mb-3">Epson HX-20 (1982)</h1>
+<p><strong id="labelMan">Hersteller:</strong><span id="hersteller"> Epson</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
+<h3 id="techHeading">Technische Daten</h3>
 <ul>
 <li><span id="tech_0">Prozessor: 2× Hitachi 6301 CPUs @ 614 kHz</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_0')" style="display:none;">✏️</button></li><li><span id="tech_1">RAM: 16 KB (erweiterbar)</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_1')" style="display:none;">✏️</button></li><li><span id="tech_2">Display: 120x32 LCD</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_2')" style="display:none;">✏️</button></li><li><span id="tech_3">Eingabegerät: QWERTY-Tastatur</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_3')" style="display:none;">✏️</button></li><li><span id="tech_4">Extras: Mikro-Kassettenrekorder + Drucker</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_4')" style="display:none;">✏️</button></li>
 </ul>
-<h3>Historische Bedeutung</h3>
+<h3 id="histHeading">Historische Bedeutung</h3>
 <p id="bedeutung">Erster Laptop mit eingebautem Akku, Drucker und Speicher. Kompakt, vielseitig und mobil – ein echter Pionier tragbarer Computer.<button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('bedeutung')" style="display:none;">✏️</button></p>
 </div>
 
@@ -112,6 +112,7 @@ function editField(id) {
 </div>
 </div>
 </div>
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>

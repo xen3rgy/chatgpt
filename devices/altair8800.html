@@ -20,18 +20,18 @@
 <body>
 <div class="container my-5">
 <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
-<a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
-<h1 class="mb-3">Altair 8800 (1975)</h1>
+<a class="btn btn-secondary mb-3" href="../index.html" id="backLink">← Zurück</a>
+<h1 id="pageTitle" class="mb-3">Altair 8800 (1975)</h1>
 <img alt="Altair 8800" class="device-img" src="https://www.golem.de/2501/192414-488582-488579.jpg"/>
-<p><strong>Hersteller:</strong><span id="hersteller"> MITS</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
-<h3>Technische Daten</h3>
+<p><strong id="labelMan">Hersteller:</strong><span id="hersteller"> MITS</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
+<h3 id="techHeading">Technische Daten</h3>
 <ul>
 <li><span id="tech_0">Prozessor: Intel 8080 @ 2 MHz</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_0')" style="display:none;">✏️</button></li>
 <li><span id="tech_1">RAM: 256 Byte (erweiterbar bis 64 KB)</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_1')" style="display:none;">✏️</button></li>
 <li><span id="tech_2">Bedienung über Kippschalter &amp; LED-Anzeige</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_2')" style="display:none;">✏️</button></li>
 <li><span id="tech_3">S-100 Bus zur Erweiterung</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_3')" style="display:none;">✏️</button></li>
 </ul>
-<h3>Historische Bedeutung</h3>
+<h3 id="histHeading">Historische Bedeutung</h3>
 <p id="bedeutung">Der Altair 8800 gilt als Startpunkt der Personal-Computer-Revolution. Er inspirierte Bill Gates und Paul Allen zur Gründung von Microsoft. Das Design mit Schaltern und LEDs war ikonisch und prägte die frühe Heimcomputer-Ära.<button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('bedeutung')" style="display:none;">✏️</button></p>
 </div>
 
@@ -117,7 +117,7 @@ function editField(id) {
 </style>
 <div id="adminModal">
 <div id="adminModalContent">
-<h3>Admin Login</h3>
+<h3 id="techHeading">Admin Login</h3>
 <input class="form-control mb-3" id="adminPassword" placeholder="Passwort" type="password"/>
 <div class="btn-group">
 <button class="btn btn-primary" onclick="confirmAdminLogin()">Einloggen</button>
@@ -125,6 +125,8 @@ function editField(id) {
 </div>
 </div>
 </div>
+<script src="../translations.js"></script>
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>

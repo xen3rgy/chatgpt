@@ -11,14 +11,14 @@
 <body>
 <div class="container my-5">
 <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
-<a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
-<h1 class="mb-3">Commodore 16 (1984)</h1>
-<p><strong>Hersteller:</strong><span id="hersteller"> Commodore International</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
-<h3>Technische Daten</h3>
+<a class="btn btn-secondary mb-3" href="../index.html" id="backLink">← Zurück</a>
+<h1 id="pageTitle" class="mb-3">Commodore 16 (1984)</h1>
+<p><strong id="labelMan">Hersteller:</strong><span id="hersteller"> Commodore International</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('hersteller')" style="display:none;">✏️</button></p>
+<h3 id="techHeading">Technische Daten</h3>
 <ul>
 <li><span id="tech_0">Prozessor: MOS 7501 @ 0.89 MHz</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_0')" style="display:none;">✏️</button></li><li><span id="tech_1">RAM: 16 KB</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_1')" style="display:none;">✏️</button></li><li><span id="tech_2">Grafik: TED-Chip, 121 Farben, 320×200</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_2')" style="display:none;">✏️</button></li><li><span id="tech_3">Sound: 2 Kanäle, 1 Rauschgenerator</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_3')" style="display:none;">✏️</button></li><li><span id="tech_4">Speicher: Datasette 1531, Floppy 1551</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_4')" style="display:none;">✏️</button></li>
 </ul>
-<h3>Historische Bedeutung</h3>
+<h3 id="histHeading">Historische Bedeutung</h3>
 <p id="bedeutung">Einsteigergerät der TED-Serie mit BASIC 3.5, blieb hinter C64 zurück. Beliebt in Europa, aber kein großer Erfolg in den USA.<button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('bedeutung')" style="display:none;">✏️</button></p>
 </div>
 
@@ -112,6 +112,7 @@ function editField(id) {
 </div>
 </div>
 </div>
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>

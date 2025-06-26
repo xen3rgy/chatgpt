@@ -10,13 +10,13 @@
 <body>
 <div class="container my-5">
     <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
-    <a href="../index.html" class="btn btn-secondary mb-3">&larr; Zurück</a>
-    <h1 class="mb-3">TI SR-56 (1976)</h1>
+    <a href="../index.html" id="backLink" class="btn btn-secondary mb-3">&larr; Zurück</a>
+    <h1 id="pageTitle" class="mb-3">TI SR-56 (1976)</h1>
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/TI_SR-56.jpg" alt="TI SR-56" class="device-img mb-4" style="max-width:100%;height:auto;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
 
-    <p><strong>Hersteller:</strong> <span id="hersteller">Texas Instruments</span> <button class="btn btn-sm btn-outline-primary admin-edit" style="display:none;" onclick="editField('hersteller')">✏️</button></p>
+    <p><strong id="labelMan">Hersteller:</strong> <span id="hersteller">Texas Instruments</span> <button class="btn btn-sm btn-outline-primary admin-edit" style="display:none;" onclick="editField('hersteller')">✏️</button></p>
 
-    <h3>Technische Daten</h3>
+    <h3 id="techHeading">Technische Daten</h3>
     <ul>
         <li><span id="tech_0">Programmierbar mit bis zu 100 Befehlen</span> <button class="btn btn-sm btn-outline-primary admin-edit ms-2" style="display:none;" onclick="editField('tech_0')">✏️</button></li>
         <li><span id="tech_1">Alphanumerische LED-Anzeige</span> <button class="btn btn-sm btn-outline-primary admin-edit ms-2" style="display:none;" onclick="editField('tech_1')">✏️</button></li>
@@ -24,7 +24,7 @@
         <li><span id="tech_3">Stromversorgung: 9V Batterie oder Netzteil</span> <button class="btn btn-sm btn-outline-primary admin-edit ms-2" style="display:none;" onclick="editField('tech_3')">✏️</button></li>
     </ul>
 
-    <h3>Historische Bedeutung</h3>
+    <h3 id="histHeading">Historische Bedeutung</h3>
     <p id="bedeutung">Der TI SR-56 war einer der ersten erschwinglichen wissenschaftlichen Taschenrechner mit Programmierspeicher. Er war besonders bei Ingenieuren und Studenten beliebt. <button class="btn btn-sm btn-outline-primary admin-edit ms-2" style="display:none;" onclick="editField('bedeutung')">✏️</button></p>
 </div>
 
@@ -119,6 +119,7 @@ function editField(id) {
   </div>
 </div>
 
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>

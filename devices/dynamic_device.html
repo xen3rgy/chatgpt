@@ -9,9 +9,9 @@
 <body>
 <div class="container my-5">
     <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
-    <a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
+    <a class="btn btn-secondary mb-3" href="../index.html" id="backLink">← Zurück</a>
     <h1 class="mb-3" id="title">Neues Exponat</h1>
-    <p><strong>Hersteller:</strong> <span id="manufacturer"></span></p>
+    <p><strong id="labelMan">Hersteller:</strong> <span id="manufacturer"></span></p>
     <p id="description"></p>
 </div>
 <div id="adminModal">
@@ -24,6 +24,7 @@
     </div>
   </div>
 </div>
+<script src="../translations.js"></script>
 <script src="../script.js"></script>
 <script>
 function showAdminLogin() {
