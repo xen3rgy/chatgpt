@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title id="title">Altair 8800 (1975)</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link href="style.css" rel="stylesheet">
+    <link href="admin.css" rel="stylesheet">
+    <!--link href="bootstrap.min.css" rel="stylesheet"-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        .device-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container my-5">
+    <!--button onclick="toggleTheme()" class="btn btn-dark ms-2 mb-3">🌙 Dark Mode</button>
+<a href="index.html" class="btn btn-secondary mb-4">&larr; Zurück</a-->
+
+  <button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
+  <div class="btn-group ms-2 mb-3" role="group" aria-label="Language selector">
+    <button class="btn language-btn btn-sm" onclick="readData(1031)">DE</button>
+    <button class="btn language-btn btn-sm" onclick="readData(1033)">EN</button>
+  </div>
+  <a class="btn btn-secondary mb-3" href="../index.html">← Zurück</a>
+    <h1 id="model" class="mb-3">DEVICE</h1>
+    <img id="image" src="" alt="image of DEVICE" class="device-img">
+
+    <p><strong id="header_manufacturer">Hersteller: </strong><span id="manufacturer">MITS</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('manufacturer')" style="display:none;">✏️</button></p>
+
+    <!--p><strong>Hersteller:</strong></p>
+    <div id="manufacturer"></div-->
+    <h3 id="header_technical">Technische Daten</h3>
+    <div id="technicalData">
+      <!--ul>
+<li><span id="tech_0">Prozessor: Intel 8080 @ 2 MHz</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_0')" style="display:none;">✏️</button></li>
+<li><span id="tech_1">RAM: 256 Byte (erweiterbar bis 64 KB)</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_1')" style="display:none;">✏️</button></li>
+<li><span id="tech_2">Bedienung über Kippschalter &amp; LED-Anzeige</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_2')" style="display:none;">✏️</button></li>
+<li><span id="tech_3">S-100 Bus zur Erweiterung</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_3')" style="display:none;">✏️</button></li>
+</ul-->
+    </div>
+    <h3 id="header_historical">Historische Bedeutung</h3>
+    <div id="historical"></div>
+    <!--p>Der Altair 8800 gilt als Startpunkt der Personal-Computer-Revolution. Er inspirierte Bill Gates und Paul Allen zur Gründung von Microsoft. Das Design mit Schaltern und LEDs war ikonisch und prägte die frühe Heimcomputer-Ära.</p-->
+    <h3 id="header_general">Allgemeine Informationen</h3>
+    <div id="general"></div>
+
+    <h3 id="header_special">Special</h3>
+    <div id="special"></div>
+</div>
+<div id="status"></div>
+
+<div id="adminModal">
+  <div id="adminModalContent">
+    <h3>Admin Login</h3>
+    <input type="password" id="adminPassword" class="form-control mb-3" placeholder="Passwort">
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="confirmAdminLogin()">Einloggen</button>
+        <button class="btn btn-secondary" onclick="hideAdminLogin()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+</body>
+<script src="script.js"></script>
+<script src="admin.js"></script>
+<script>
+   function getList(text, outputDivName, textId) 
+   {
+      const lines = text.split('\n').filter(line => line.trim() !== '');
+      var list = `<button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('${outputDivName}_content')" style="display:none;">✏️</button>
+      <ul id="${outputDivName}_content" data-textId="${textId}">`;
+
+        /*
+<li><span id="tech_0">Prozessor: Intel 8080 @ 2 MHz</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_0')" style="display:none;">✏️</button></li>
+<li><span id="tech_1">RAM: 256 Byte (erweiterbar bis 64 KB)</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_1')" style="display:none;">✏️</button></li>
+<li><span id="tech_2">Bedienung über Kippschalter &amp; LED-Anzeige</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_2')" style="display:none;">✏️</button></li>
+<li><span id="tech_3">S-100 Bus zur Erweiterung</span><button class="btn btn-sm btn-outline-primary admin-edit ms-2" onclick="editField('tech_3')" style="display:none;">✏️</button></li>
+        */
+      lines.forEach(line => 
+      {
+        let formattedLine = line;
+
+        const colonIndex = line.indexOf(':');
+        if (colonIndex !== -1) {
+          const key = line.slice(0, colonIndex).trim();
+          const value = line.slice(colonIndex + 1).trim();
+          formattedLine = `<strong>${key}:</strong> ${value}`;
+          //console.log(formattedLine);
+        }
+
+        list += `<li>${formattedLine}</li>`;
+      });
+      list += "</ul>";
+      setHTML(list, outputDivName,textId);
+    }
+
+    function readData(lcid) 
+    {
+        // create an HTTP GET request to the server
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) 
+            {
+              //document.getElementById("status").innerHTML=this.responseText;
+              //alert(this.responseText);
+              console.log(this.responseText);
+              let json = JSON.parse(this.responseText);
+              setHTML(json[0].model, "title",0);
+              setHTML(json[0].model, "model",0);
+              //document.getElementById("image").src = "devices/" + json[0].model + ".jpg"
+              setHTML(json[0].manufacturer, "manufacturer",json[0].id+"_manufacturer");
+              getList(json[0].technical, "technicalData",json[0].technical_textid);
+              getList(json[0].historical, "historical",json[0].historical_textid);
+              getList(json[0].general, "general",json[0].general_textid);
+              getList(json[0].special, "special",json[0].special_textid);
+            }
+            applyAdminMode(); //if admin mode is set -> apply it
+        }
+        const params = new URLSearchParams(window.location.search);
+        const device = params.get("device");
+         
+        lcid = setLCID(lcid);
+
+        if(lcid==1033)
+        {
+          setHTML("Manufacturer: ","header_manufacturer",0);
+          setHTML("Technical data","header_technical",0);
+          setHTML("Historical significance","header_historical",0);
+          setHTML("General data","header_general",0);
+          setHTML("Special features","header_special",0);
+        }
+        else
+        {
+          setHTML("Hersteller: ","header_manufacturer",0);
+          setHTML("Technische Daten","header_technical",0);
+          setHTML("Historische Bedeutung","header_historical",0);
+          setHTML("Allgemeine Informationen","header_general",0);
+          setHTML("Besonderheiten","header_special",0);
+        }
+
+        image = document.getElementById("image");
+        imagename = device.replace('/','_'); //remove invalid characters for filename
+        image.src = "devices/" + imagename + ".jpg";
+        image.alt = image.src;
+
+        request.open('GET', 'getdeviceinfo.php?lcid=' +lcid+'&device=' + device, true);
+        request.send();
+    }
+    readData(null);
+</script>
+</html>

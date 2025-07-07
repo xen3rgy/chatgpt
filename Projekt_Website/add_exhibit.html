@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<title>Neues Exponat</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container my-5">
+<button class="btn btn-dark ms-2 mb-3" onclick="toggleTheme()">🌙 Dark Mode</button>
+<a id="backLink" class="btn btn-secondary mb-3" href="index.html">← Zurück</a>
+<h1 id="pageTitle" class="mb-3">Neues Exponat anlegen</h1>
+<!--form id="uploadForm" enctype="multipart/form-data" action="getdeviceinfo.php" method="POST"-->
+<form id="uploadForm" enctype="multipart/form-data">
+  <div class="mb-3">
+  <label id="labelTitle" for="titleInput" class="form-label">Titel</label>
+  <input type="text" id="titleInput" class="form-control"/>
+  </div>
+  <div class="mb-3">
+  <label id="labelModel" for="modelInput" class="form-label">Modell</label>
+  <input type="text" id="modelInput" class="form-control"/>
+  </div>
+  <div class="mb-3">
+  <label id="labelDesc" for="descInput" class="form-label">Kurzbeschreibung</label>
+  <textarea id="descInput" class="form-control" rows="3"></textarea>
+  </div>
+  <div class="mb-3">
+  <label id="labelYear" for="yearInput" class="form-label">Jahr</label>
+  <input type="text" id="yearInput" class="form-control"/>
+  </div>
+  <div class="mb-3">
+  <label id="labelMan" for="manufacturerInput" class="form-label">Hersteller</label>
+  <input type="text" id="manufacturerInput" class="form-control"/>
+  </div>
+  <div class="col-8">
+    <label for="picture" class="form-label">Picture-Upload</label>
+    <input type="file" class="form-control" id="picture" name="picture" accept=".jpg, .jpeg, .png, .gif">
+    <small class="form-text text-muted"> Datei-Upload für das Logo. JPG wird empfohlen. </small>
+  </div>
+  <!--button id="saveBtn" class="btn btn-primary" onclick="saveNewExhibit()">Speichern</button-->
+  <button id="saveBtn" type="submit" class="btn btn-primary">Speichern</button>
+</form>
+<div id="status"></div>
+</div>
+<div id="adminModal">
+  <div id="adminModalContent">
+    <h3>Admin Login</h3>
+    <input type="password" id="adminPassword" class="form-control mb-3" placeholder="Passwort">
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="confirmAdminLogin()">Einloggen</button>
+        <button class="btn btn-secondary" onclick="hideAdminLogin()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+<script src="translations.js"></script>
+<script src="script.js"></script>
+<script src="admin.js"></script>
+  <script>
+    const form = document.getElementById('uploadForm');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('picture');
+      const file = fileInput.files[0];
+
+      if (!file || !['image/jpeg'].includes(file.type)) {
+        status.textContent = "Bitte eine gültige JPG-Datei auswählen.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('picture', file);
+      formData.append('title', document.getElementById('titleInput').value);
+      formData.append('model', document.getElementById('modelInput').value);
+      formData.append('description', document.getElementById('descInput').value);
+      formData.append('year', document.getElementById('yearInput').value);
+      formData.append('manufacturer', document.getElementById('manufacturerInput').value);
+      formData.append('lcid', getLCID());
+
+      try {
+        const response = await fetch('add_exhibit.php', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.text();
+        status.textContent = result;
+      } catch (error) {
+        status.textContent = 'Upload fehlgeschlagen: ' + error.message;
+      }
+    });
+
+    function saveNewExhibit() {    
+    const data = {
+        //id: 'new' + Date.now(),
+        lcid: getLCID(),
+        title: document.getElementById('titleInput').value,
+        description: document.getElementById('descInput').value,
+        year: document.getElementById('yearInput').value,
+        manufacturer: document.getElementById('manufacturerInput').value,
+        picture: file_base64
+    };
+    /*const exhibits = JSON.parse(localStorage.getItem('newExhibits') || '[]');
+    exhibits.push(data);
+    localStorage.setItem('newExhibits', JSON.stringify(exhibits));*/
+    createExhibitInDatabase(JSON.stringify(data));
+    //window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<title>Classic Computing Vitrine</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container my-5">
+<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="mb-0">Classic Computing Vitrine</h1><button class="btn btn-dark ms-2" onclick="toggleTheme()">🌙 Dark Mode</button></div>
+<input class="form-control mb-4" id="searchInput" onkeyup="filterEntries()" placeholder="Suche nach Hersteller oder Jahr..." type="text"/>
+<div class="row" id="entries">
+<div class="col-md-4 entry" data-tags="MITS 1975">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/altair8800.html"><span id="title_0">Altair 8800 (1975)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_0')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_0">Erster erfolgreicher Personal Computer. Grundlage für die Gründung von Microsoft.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_0')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Atari 1989">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/atarifolio.html"><span id="title_1">Atari Portfolio (1989)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_1')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_1">Erster IBM-kompatibler Palmtop-PC. Bekannt aus Terminator 2.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_1')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Commodore 1987">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/commodore1541.html"><span id="title_2">Commodore 1541-II (1987)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_2')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_2">5,25″-Diskettenlaufwerk für den C64. Verbesserte Version mit externem Netzteil.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_2')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Cambridge 1987">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/cambridgez88.html"><span id="title_3">Cambridge Z88 (1987)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_3')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_3">Mobiler Z80-Rechner mit LCD und integriertem Textverarbeitungsprogramm.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_3')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Epson 1982">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/hx20.html"><span id="title_4">Epson HX-20 (1982)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_4')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_4">Erster tragbarer Computer mit eingebautem Drucker und Mikro-Kassettenlaufwerk.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_4')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Hewlett-Packard 1973">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/hp45.html"><span id="title_5">HP-45 (1973)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_5')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_5">Fortschrittlicher wissenschaftlicher Taschenrechner mit RPN-Eingabe und Trigonometrie.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_5')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Hewlett-Packard 1991">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/hp95lx.html"><span id="title_6">HP 95LX (1991)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_6')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_6">DOS-basierter Palmtop mit Lotus 1-2-3 und QWERTY-Tastatur.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_6')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Kenbak 1971">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/kenbak.html"><span id="title_7">Kenbak-1 (1971)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_7')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_7">Erster Personal Computer auf TTL-Basis ohne Mikroprozessor.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_7')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Kosmos 1983">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/cp1.html"><span id="title_8">Kosmos CP1 (1983)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_8')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_8">Lerncomputer mit Intel 8049 Mikrocontroller zur Einführung in die Programmierung.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_8')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Sinclair 1982">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/zxspectrum.html"><span id="title_9">Sinclair ZX Spectrum (1982)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_9')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_9">Beliebter Heimcomputer mit Farbgrafik, BASIC und tausenden Spielen.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_9')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Tamaya 1976">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/tamaya.html"><span id="title_10">Tamaya NC-2 (1976)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_10')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_10">Navigationstaschenrechner für Astronavigation und Dead Reckoning auf See.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_10')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Texas Instruments 1976">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/tisr56.html"><span id="title_11">TI SR-56 (1976)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_11')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_11">Programmierbarer Taschenrechner mit 100 Schritten und LED-Anzeige.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_11')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Texas Instruments 1981">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/ti994a.html"><span id="title_12">TI-99/4A (1981)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_12')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_12">Einer der ersten 16-Bit-Heimcomputer mit Farb-Grafik und Sprachausgabe.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_12')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Commodore 1982">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/c64.html"><span id="title_13">Commodore 64 (1982)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_13')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_13">Meistverkaufter Heimcomputer aller Zeiten mit 64 KB RAM und SID-Soundchip.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_13')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Commodore 1984">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/c16.html"><span id="title_14">Commodore 16 (1984)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_14')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_14">Einsteiger-Heimcomputer als Nachfolger des VC20, mit integrierter BASIC-Version 3.5.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_14')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Commodore 1982">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/datasette.html"><span id="title_15">Commodore Datasette (1982)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_15')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_15">Kassettenlaufwerk zur Datenspeicherung für Commodore-Heimcomputer.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_15')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Commodore 1986">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/c64c.html"><span id="title_16">Commodore 64C (1986)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_16')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_16">Flache C64-Neuauflage mit gleicher Technik und verbessertem Design.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_16')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Sinclair 1981">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/zx81.html"><span id="title_17">Sinclair ZX81 (1981)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_17')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_17">Minimalistischer Heimcomputer mit 1 KB RAM, ideal für BASIC-Lernen.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_17')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Sharp 1982">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/pc1251.html"><span id="title_18">Sharp PC-1251 (1982)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_18')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_18">Programmierbarer Taschencomputer mit BASIC und LC-Display.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_18')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Sharp 1986">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/pc1403.html"><span id="title_19">Sharp PC-1403 (1986)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_19')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_19">Wissenschaftlicher Taschencomputer mit integriertem BASIC-Interpreter.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_19')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Sharp 1982">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/rd720.html"><span id="title_20">Sharp RD-720 (1982)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_20')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_20">Seltenes Sharp-Gerät, vermutlich Kassettengerät oder Interface-Modul.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_20')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Atari 1986">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/atari1040st.html"><span id="title_21">Atari 1040ST (1986)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_21')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_21">16-Bit Heimcomputer mit grafischer Oberfläche und MIDI-Anschluss, beliebt bei Musikern.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_21')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+<div class="col-md-4 entry" data-tags="Triumphator 1956">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title"><a href="devices/triumphator.html"><span id="title_22">Triumphator (1956)</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_22')" style="display:none;">✏️</button></h5>
+<p class="card-text"><span id="text_22">Mechanische Rechenmaschine aus Deutschland, bekannt für Langlebigkeit und Präzision.</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_22')" style="display:none;">✏️</button></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="script.js"></script>
+<footer>
+    © 2025 Classic Computing Vitrine – FH Kärnten
+</footer>
+
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<div id="adminModal">
+  <div id="adminModalContent">
+    <h3>Admin Login</h3>
+    <input type="password" id="adminPassword" class="form-control mb-3" placeholder="Passwort">
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="confirmAdminLogin()">Einloggen</button>
+        <button class="btn btn-secondary" onclick="hideAdminLogin()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+
+function showAdminLogin() {
+    document.getElementById("adminModal").style.display = "block";
+    document.getElementById("adminPassword").focus();
+}
+function hideAdminLogin() {
+    document.getElementById("adminModal").style.display = "none";
+}
+function confirmAdminLogin() {
+    const input = document.getElementById("adminPassword").value;
+    if (input === "admin123") {
+        sessionStorage.setItem("admin", "true");
+        hideAdminLogin();
+        applyAdminMode();
+    } else {
+        alert("Falsches Passwort.");
+    }
+}
+function logoutAdmin() {
+    sessionStorage.removeItem("admin");
+    applyAdminMode();
+}
+function applyAdminMode() {
+    document.querySelectorAll(".admin-edit").forEach(el => {
+        el.style.display = sessionStorage.getItem("admin") === "true" ? "inline-block" : "none";
+    });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    if (performance.navigation?.type === 1 || performance.getEntriesByType("navigation")[0]?.type === "reload") {
+        sessionStorage.removeItem("admin");
+    }
+    applyAdminMode();
+
+    document.addEventListener("keydown", function(e) {
+        if (e.shiftKey && e.ctrlKey) {
+            if (sessionStorage.getItem("admin") === "true") {
+                logoutAdmin();
+            } else {
+                showAdminLogin();
+            }
+        }
+    });
+
+    document.addEventListener("keydown", function(e) {
+        if (document.getElementById("adminModal").style.display === "block" && e.key === "Enter") {
+            confirmAdminLogin();
+        }
+    });
+});
+
+function editField(id) {
+    const element = document.getElementById(id);
+    const newText = prompt("Neuer Text:", element.innerText);
+    if (newText !== null) {
+        element.innerText = newText;
+    }
+}
+</script>
+
+
+<style>
+#adminModal {
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+}
+#adminModalContent {
+    background: white;
+    padding: 30px;
+    max-width: 400px;
+    margin: 150px auto;
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #000;
+}
+body.dark-mode #adminModalContent {
+    background: #222;
+    color: #fff;
+}
+body.dark-mode #adminModalContent input::placeholder {
+    color: #ddd;
+}
+body.dark-mode #adminModalContent input {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+body.dark-mode #adminModalContent button {
+    color: #fff;
+}
+</style>
+</body>
+</html>

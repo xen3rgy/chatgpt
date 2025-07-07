@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<title>Classic Computing Vitrine</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
+<link href="style.css" rel="stylesheet"/>
+<link href="admin.css" rel="stylesheet"/>
+<link href="bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container my-5">
+<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="mb-0">Classic Computing Vitrine</h1><button class="btn btn-dark ms-2" onclick="toggleTheme()">🌙 Dark Mode</button></div>
+<input class="form-control mb-4" id="searchInput" onkeyup="filterEntries()" placeholder="Suche nach Hersteller oder Jahr..." type="text"/>
+
+<div class="row" id="entries">
+</div>
+<script src="script.js"></script>
+<script src="admin.js"></script>
+<footer>
+    © 2025 Classic Computing Vitrine – FH Kärnten
+</footer>
+</div>
+</div>
+<!--div id="adminModal" w3-include-html="admin.html"></div--> 
+<div id="adminModal">
+  <div id="adminModalContent">
+    <h3>Admin Login</h3>
+    <input type="password" id="adminPassword" class="form-control mb-3" placeholder="Passwort">
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="confirmAdminLogin()">Einloggen</button>
+        <button class="btn btn-secondary" onclick="hideAdminLogin()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script>
+function fillTableOfContents() 
+{        
+    // create an HTTP GET request to the server
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) 
+        {
+            console.log(this.responseText);
+            let json = JSON.parse(this.responseText);
+            var inner="";
+            json.forEach(element => {
+                model = element.model;
+                year = element.year;
+                // only first line of historical info and trim numbering
+                const lines = element.historical.split('\n').filter(line => line.trim() !== '');
+                historical = "";
+                if (lines != null && lines[0] != null)
+                {
+                    historical = lines[0].trim();           
+                    if(historical.startsWith("1."))
+                    {
+                        historical = historical.slice(2);
+                    }
+                }
+                
+                const entry = `
+<div class="col-md-4 entry" data-tags="${element.manufacturer} ${year}">
+    <div class="card">
+        <div class="card-body">
+        <h5 class="card-title"><a href="device.html?lang=1031&device=${element.name}"><span id="title_0">${model} (${year})</span></a><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('title_0')" style="display:none;">✏️</button></h5>
+        <p class="card-text"><span id="text_0">${historical}</span><button class="btn btn-sm btn-outline-primary admin-edit" onclick="editField('text_0')" style="display:none;">✏️</button></p>
+        </div>
+    </div>
+</div>`;
+                console.log(entry);
+                inner = inner + entry;
+                }
+            );
+            
+            setHTML(inner,"entries");
+            adjustVisuals();
+        }
+    }
+    const params = new URLSearchParams(window.location.search);
+    lang = params.get("lang");
+    if (lang==null)
+        lang = 1031;
+
+    request.open('GET', 'getdeviceinfo.php?lang=' +lang, true);
+    request.send();
+}
+fillTableOfContents();
+</script>
