@@ -55,22 +55,53 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-function editField(id) {
-    const element = document.getElementById(id);
-    const newText = prompt("Neuer Text:", element.innerText);
-    if (newText !== null) {
-        element.innerText = newText;
-        const textId = element.getAttribute("data-textId");
-        console.log("editField: textid = "+textId);
-        if (textId!=null && textId!="0")
-        {
-            textParts = textId.split("_");
-            if (textParts.length < 2)
-                updateText(textId,newText);
-            else
-                updateExhibitColumn(textParts[0],textParts[1],newText);
-        }
+let editTarget = null;
+function showEditModal(id) {
+    editTarget = document.getElementById(id);
+    if (!editTarget) return;
+    let modal = document.getElementById("editModal");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "editModal";
+        modal.innerHTML = `<div id="editModalContent">
+            <textarea id="editTextarea" class="form-control mb-3" rows="6"></textarea>
+            <div class="btn-group">
+                <button id="editSave" class="btn btn-primary">Speichern</button>
+                <button id="editCancel" class="btn btn-secondary">Abbrechen</button>
+            </div>
+        </div>`;
+        document.body.appendChild(modal);
+        document.getElementById("editSave").addEventListener("click", confirmEdit);
+        document.getElementById("editCancel").addEventListener("click", hideEditModal);
     }
+    document.getElementById("editTextarea").value = editTarget.innerText;
+    modal.style.display = "block";
+    document.getElementById("editTextarea").focus();
+}
+
+function hideEditModal() {
+    const modal = document.getElementById("editModal");
+    if (modal) modal.style.display = "none";
+}
+
+function confirmEdit() {
+    const textarea = document.getElementById("editTextarea");
+    if (!editTarget || !textarea) return;
+    const newText = textarea.value;
+    editTarget.innerText = newText;
+    hideEditModal();
+    const textId = editTarget.getAttribute("data-textId");
+    if (textId && textId !== "0") {
+        const textParts = textId.split("_");
+        if (textParts.length < 2)
+            updateText(textId, newText);
+        else
+            updateExhibitColumn(textParts[0], textParts[1], newText);
+    }
+}
+
+function editField(id) {
+    showEditModal(id);
 }
 
 function sendHTTPRequest(type,phpfile,body)
